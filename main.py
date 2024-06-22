@@ -111,10 +111,13 @@ async def buy(interaction: discord.Interaction, quantity: Union[str, None] = Non
     if quantity is None: quantity = 1
     elif quantity.lower() == 'half': quantity = int(max(1, (balance / 75) // 2))
     elif quantity.lower() == 'all': quantity = int(max(1, balance // 75))
-############# add a catch case here for if they type anything other than a number of half/all
-    if user["balance"] > (int(quantity) * pack_cost):
-        user["balance"] -= (int(quantity) * pack_cost)
-        user["packs"] += int(quantity)
+    elif quantity.isdigit() == False:
+        await interaction.response.send_message(f"Please enter a number or half/all.")
+        return
+    quantity = int(quantity)
+    if user["balance"] > (quantity * pack_cost):
+        user["balance"] -= (quantity * pack_cost)
+        user["packs"] += quantity
         db_collection.update_one({"_id":interaction.user.name}, { "$set": { "balance": user["balance"], "packs": user["packs"] }})
 
         await interaction.response.send_message(f"Succesfully purchased {quantity} packs for ${quantity*pack_cost}.")
