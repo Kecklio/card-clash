@@ -196,10 +196,6 @@ async def deck(interaction: discord.Interaction, number: app_commands.Choice[int
     if user is None:
         await interaction.response.send_message(f"You must register first by using /register")
         return
-##### Remove this after everyone has updated.
-    if user['deck'] is None:
-        await interaction.response.send_message(f"You must update your database first by using /update")
-        return
     if quantity is None: quantity = 1
     
     # view modification
@@ -321,8 +317,8 @@ async def pull(interaction: discord.Interaction, quantity: Union[int, None] = No
     if user["packs"] - quantity < 0:
         await interaction.response.send_message(f"You do not have {quantity} packs to open")
         return
-    if quantity > 10:
-        await interaction.response.send_message("The maximum amount of packs that can be opened at once is 10.")
+    if quantity > 10 or quantity < 1:
+        await interaction.response.send_message("You must select between 1 and 10 packs to pull.")
         return
 
     async def pull_cards():
@@ -433,23 +429,6 @@ async def sell(interaction: discord.Interaction, card: int, quantity: Union[str,
         update_total(user)
         # await interaction.response.send_message(f"Confirm sale of {quantity} number of {card} cards")
 
-##### Remove this after everyone has updated.
-# update command
-@bot.tree.command(name="update", description="Updates your database to allow for deck building.")
-async def update(interaction: discord.Interaction):
-    user = db_collection.find_one({"_id":interaction.user.name})
-    if user is None:
-        await interaction.response.send_message(f"You must register first by using /register")
-        return
-    if "deck" in user:
-        await interaction.response.send_message("Account has already been updated.")
-        return
-    deck_array = [[0] * 14 for _ in range(5)]
-    db_collection.update_one(
-        {"_id": interaction.user.name},
-        {"$set": {"deck": deck_array}}
-    )
-    await interaction.response.send_message("Account successfully updated.")
 
 
 # FUNCTION LIST
