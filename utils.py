@@ -64,15 +64,32 @@ def roll_for_shiny():
 
 def random_card():
     rand_num = random.randint(1, 200)
-    if rand_num <= 10:
-        return 14  # Joker
-    elif rand_num <= 20:
-        return 1  # Ace
-    elif rand_num <= 40:
-        return 11  # Jack
-    elif rand_num <= 60:
-        return 12  # Queen
-    elif rand_num <= 80:
-        return 13  # King
-    else:
-        return (rand_num % 10) + 2
+    
+    if rand_num <= 28:  # 14% probability
+        return 2
+    elif rand_num <= 54:  # 13% probability
+        return 3
+    elif rand_num <= 78:  # 12% probability
+        return 4
+    elif rand_num <= 100:  # 11% probability
+        return 5
+    elif rand_num <= 120:  # 10% probability
+        return 6
+    elif rand_num <= 138:  # 9% probability
+        return 7
+    elif rand_num <= 154:  # 8% probability
+        return 8
+    elif rand_num <= 168:  # 7% probability
+        return 9
+    elif rand_num <= 180:  # 6% probability
+        return 10
+    elif rand_num <= 190:  # 5% probability
+        return 1 # Ace
+    elif rand_num <= 194:  # 2% probability
+        return 11 # Jack
+    elif rand_num <= 197:  # 1.5% probability
+        return 12 # Queen
+    elif rand_num <= 199:  # 1% probability
+        return 13 # King
+    else:  # 0.5% probability
+        return 14 # Joker
